@@ -1,0 +1,51 @@
+// AddTodo.js
+
+import React, { useState } from 'react';
+
+const AddTodo = ({ addTodo }) => {
+  const [newTodo, setNewTodo] = useState("");
+  const [newDate, setNewDate] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!newTodo || !newDate) return;
+
+    const todo = {
+      id: Date.now(),
+      text: newTodo,
+      date: newDate
+    };
+
+    fetch("/api/todos", {
+      method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(todo)
+    }).then(() => {
+      addTodo(todo);
+      setNewTodo("");
+      setNewDate("");
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        type="text"
+        value={newTodo}
+        onChange={(e) => setNewTodo(e.target.value)}
+        placeholder="Enter task"
+      />
+      <input
+        type="datetime-local"
+        value={newDate}
+        onChange={(e) => setNewDate(e.target.value)}
+        placeholder="Enter date and time"
+      />
+      <button type="submit">Add</button>
+    </form>
+  );
+};
+
+export default AddTodo;
