@@ -1,0 +1,52 @@
+//TodoItem.js
+
+import React, { useState } from 'react';
+
+const TodoItem = ({ todo, deleteTodo, addComment }) => {
+  const [newComment, setNewComment] = useState("");
+
+  const handleDelete = () => {
+    deleteTodo(todo.id);
+  };
+
+  const handleAddComment = () => {
+    if (newComment.trim() === "") return;
+
+    const comment = {
+      id: Date.now(),
+      text: newComment
+    };
+
+    addComment(todo.id, comment);
+    setNewComment("");
+  };
+
+  return (
+    <li>
+      <div>{todo.text}</div>
+      <div>{new Date(todo.date).toLocaleString()}</div>
+
+      { }
+      <ul>
+        {todo.comments.map(comment => (
+          <li key={comment.id}>{comment.text}</li>
+        ))}
+      </ul>
+
+      { }
+      <div>
+        <input
+          type="text"
+          value={newComment}
+          onChange={(e) => setNewComment(e.target.value)}
+          placeholder="Add a comment"
+        />
+        <button onClick={handleAddComment}>Add Comment</button>
+      </div>
+
+      <button onClick={handleDelete}>Delete</button>
+    </li>
+  );
+};
+
+export default TodoItem;
